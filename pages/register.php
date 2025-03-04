@@ -1,5 +1,30 @@
-<?php
+<?php// api/register.php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $data = json_decode(file_get_contents('php://input'), true);
+
+    $name = trim($data['name']);
+    $email = trim($data['email']);
+    $password = trim($data['password']);
+
+    if (empty($name) || empty($email) || empty($password)) {
+        echo json_encode(['success' => false, 'message' => 'Todos los campos son obligatorios']);
+        exit;
+    }
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo json_encode(['success' => false, 'message' => 'El email no es válido']);
+        exit;
+    }
+
+    if (strlen($password) < 6) {
+        echo json_encode(['success' => false, 'message' => 'La contraseña debe tener al menos 6 caracteres']);
+        exit;
+    }
+
+    // Continuar con el registro...
+}
 include '../includes/header.php';
+
 ?>
 
 <div class="container">

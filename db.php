@@ -1,8 +1,8 @@
 <?php
 $host = 'localhost';
 $dbname = 'licitaciones';
-$username = 'root';
-$password = '';
+$username = 'licita';
+$password = 'licita';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);

@@ -1,0 +1,50 @@
+/proyecto-subastas
+
+├── /api           # Contiene los endpoints de la API (PHP)
+├── /assets        # Archivos estáticos (CSS, JS, imágenes)
+│   ├── /css       # Archivos CSS (Bootstrap personalizado)
+│   ├── /js        # Archivos JavaScript (jQuery y scripts propios)
+│   └── /img       # Imágenes
+├── /includes      # Archivos PHP reutilizables (cabeceras, pies de página, etc.)
+├── /pages         # Páginas principales del sitio
+│   ├── index.php  # Página principal
+│   ├── login.php  # Inicio de sesión
+│   ├── register.php # Registro de usuarios
+│   ├── publish.php # Publicar autos/autopartes
+│   └── auction.php # Detalles de una subasta
+└── db.php         # Conexión a la base de datos
+
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100) UNIQUE,
+    password VARCHAR(255),
+    role ENUM('user', 'publisher') DEFAULT 'user',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE items (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    title VARCHAR(255),
+    description TEXT,
+    category ENUM('car', 'part'),
+    starting_bid DECIMAL(10, 2),
+    min_increment DECIMAL(10, 2),
+    image_url VARCHAR(255),
+    status ENUM('active', 'sold', 'closed') DEFAULT 'active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+
+CREATE TABLE bids (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    item_id INT,
+    user_id INT,
+    amount DECIMAL(10, 2),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (item_id) REFERENCES items(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
